@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProBooks - ADTEMPCO Coopmart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            font-family: 'Poppins', sans-serif;
+            color: #2c3e50;
+        }
+        .container {
+            max-width: 700px;
+            padding: 20px;
+            margin: 30px auto;
+        }
+        .header {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+        }
+        .header p {
+            font-size: 14px;
+            margin: 5px 0 0;
+            opacity: 0.8;
+        }
+        .view { display: none; }
+        .view.active { display: block; }
+        .nav-tabs {
+            border-bottom: 2px solid #3498db;
+        }
+        .nav-tabs .nav-link {
+            border-radius: 8px 8px 0 0;
+            font-size: 16px;
+            color: #2c3e50;
+            padding: 12px 20px;
+            transition: all 0.3s;
+        }
+        .nav-tabs .nav-link.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #3498db;
+        }
+        .nav-tabs .nav-link:hover {
+            background: #2980b9;
+            color: #fff;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            margin-bottom: 20px;
+            background: #fff;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .btn {
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: #3498db;
+            border: none;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        .btn-success {
+            background: #27ae60;
+            border: none;
+        }
+        .btn-success:hover {
+            background: #219653;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            border: none;
+        }
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+        .alert {
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .alert-success { background: #dff0d8; color: #27ae60; }
+        .alert-danger { background: #f2dede; color: #e74c3c; }
+        h2, h3 {
+            color: #3498db;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .table {
+            font-size: 14px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .table th, .table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+        .table th {
+            background: #3498db;
+            color: #fff;
+        }
+        .icon-btn {
+            font-size: 18px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="bi bi-calculator-fill icon-btn"></i> ProBooks</h1>
+            <p>ADTEMPCO COOPMART MANABO<br>SAN JUAN NORTE, MANABO, ABRA 2810</p>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view" class="view active">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4"><i class="bi bi-box-arrow-in-right icon-btn"></i> Login</h2>
+                    <div id="login-message"></div>
+                    <form id="login-form">
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-person icon-btn"></i> Username</label>
+                            <input type="text" id="login-username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-lock icon-btn"></i> Password</label>
+                            <input type="password" id="login-password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-box-arrow-in-right icon-btn"></i> Login</button>
+                    </form>
+                    <p class="text-center mt-3">
+                        <a href="#" onclick="showView('register')"><i class="bi bi-person-plus icon-btn"></i> Create Account</a> | 
+                        <a href="#" onclick="if (Object.keys(users).length > 0) { showView('app'); showTab('debug'); } else { showMessage('login-message', 'No accounts exist. Please register first.', true); }"><i class="bi bi-bug icon-btn"></i> Debug</a> | 
+                        <a href="#" onclick="resetData()"><i class="bi bi-arrow-repeat icon-btn"></i> Reset</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register View -->
+        <div id="register-view" class="view">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="text-center mb-4"><i class="bi bi-person-plus-fill icon-btn"></i> Register</h2>
+                    <div id="register-message"></div>
+                    <form id="register-form">
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-person icon-btn"></i> Username</label>
+                            <input type="text" id="register-username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-lock icon-btn"></i> Password</label>
+                            <input type="password" id="register-password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-person-plus-fill icon-btn"></i> Register</button>
+                    </form>
+                    <p class="text-center mt-3"><a href="#" onclick="showView('login')"><i class="bi bi-arrow-left icon-btn"></i> Back to Login</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App View -->
+        <div id="app-view" class="view">
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#" onclick="showTab('dashboard')"><i class="bi bi-house-door icon-btn"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('accounts')"><i class="bi bi-wallet2 icon-btn"></i> Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('transactions')"><i class="bi bi-receipt icon-btn"></i> Transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('reports')"><i class="bi bi-file-earmark-text icon-btn"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="showTab('debug')"><i class="bi bi-bug icon-btn"></i> Debug</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="logout()"><i class="bi bi-box-arrow-right icon-btn"></i> Logout</a>
+                </li>
+            </ul>
+
+            <div class="tab-content">
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-pane active">
+                    <h2><i class="bi bi-house-door-fill icon-btn"></i> Welcome, <span id="username"></span></h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-wallet2 icon-btn"></i> Accounts Overview</h3>
+                            <table class="table table-striped" id="accounts-table">
+                                <thead><tr><th>Name</th><th>Type</th><th>Balance</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-receipt icon-btn"></i> Recent Transactions</h3>
+                            <table class="table table-striped" id="transactions-table">
+                                <thead><tr><th>Date</th><th>Desc</th><th>Debit</th><th>Credit</th><th>Amount</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accounts Tab -->
+                <div id="accounts-tab" class="tab-pane">
+                    <h2><i class="bi bi-wallet2 icon-btn"></i> Manage Accounts</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="accounts-message"></div>
+                            <form id="account-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-tag icon-btn"></i> Name</label>
+                                    <input type="text" id="account-name" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-list icon-btn"></i> Type</label>
+                                    <select id="account-type" class="form-control">
+                                        <option value="Asset">Asset</option>
+                                        <option value="Liability">Liability</option>
+                                        <option value="Equity">Equity</option>
+                                        <option value="Revenue">Revenue</option>
+                                        <option value="Expense">Expense</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-currency-dollar icon-btn"></i> Opening Balance</label>
+                                    <input type="number" step="0.01" id="account-opening-balance" class="form-control" placeholder="0.00">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-circle icon-btn"></i> Add Account</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-list-ul icon-btn"></i> Accounts List</h3>
+                            <table class="table table-striped" id="accounts-list">
+                                <thead><tr><th>Name</th><th>Type</th><th>Balance</th><th>Action</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transactions Tab -->
+                <div id="transactions-tab" class="tab-pane">
+                    <h2><i class="bi bi-receipt icon-btn"></i> Record Transaction</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="transactions-message"></div>
+                            <form id="transaction-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> Date</label>
+                                    <input type="date" id="transaction-date" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-pencil icon-btn"></i> Description</label>
+                                    <input type="text" id="transaction-description" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-arrow-up-right icon-btn"></i> Debit Account</label>
+                                    <select id="debit-account" class="form-control"></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-arrow-down-right icon-btn"></i> Credit Account</label>
+                                    <select id="credit-account" class="form-control"></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-currency-dollar icon-btn"></i> Amount</label>
+                                    <input type="number" step="0.01" id="transaction-amount" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-check-circle icon-btn"></i> Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-list-ul icon-btn"></i> Transactions</h3>
+                            <table class="table table-striped" id="transactions-list">
+                                <thead><tr><th>Date</th><th>Desc</th><th>Debit</th><th>Credit</th><th>Amount</th><th>Action</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Tab -->
+                <div id="reports-tab" class="tab-pane">
+                    <h2><i class="bi bi-file-earmark-text icon-btn"></i> Reports</h2>
+                    <!-- Balance Sheet -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-file-earmark-spreadsheet icon-btn"></i> Balance Sheet</h3>
+                            <div id="balance-sheet-message"></div>
+                            <form id="balance-sheet-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> Start Date</label>
+                                    <input type="date" id="balance-sheet-start" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> End Date</label>
+                                    <input type="date" id="balance-sheet-end" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-filetype-csv icon-btn"></i> Export As</label>
+                                    <select id="balance-sheet-export" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="html">HTML</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mb-2"><i class="bi bi-eye icon-btn"></i> Generate</button>
+                                <button type="button" class="btn btn-success w-100" onclick="exportBalanceSheet()"><i class="bi bi-download icon-btn"></i> Export</button>
+                            </form>
+                            <table class="table table-striped mt-3" id="balance-sheet-table">
+                                <thead><tr><th>Category</th><th>Amount</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Account Ledger -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-file-earmark-text icon-btn"></i> Account Ledger</h3>
+                            <div id="account-ledger-message"></div>
+                            <form id="account-ledger-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-wallet2 icon-btn"></i> Account</label>
+                                    <select id="account-ledger-account" class="form-control"></select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> Start Date</label>
+                                    <input type="date" id="account-ledger-start" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> End Date</label>
+                                    <input type="date" id="account-ledger-end" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-filetype-csv icon-btn"></i> Export As</label>
+                                    <select id="account-ledger-export" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="html">HTML</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mb-2"><i class="bi bi-eye icon-btn"></i> Generate</button>
+                                <button type="button" class="btn btn-success w-100" onclick="exportAccountLedger()"><i class="bi bi-download icon-btn"></i> Export</button>
+                            </form>
+                            <table class="table table-striped mt-3" id="account-ledger-table">
+                                <thead><tr><th>Date</th><th>Description</th><th>Debit</th><th>Credit</th><th>Balance</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- General Ledger -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h3><i class="bi bi-journal-text icon-btn"></i> General Ledger</h3>
+                            <div id="general-ledger-message"></div>
+                            <form id="general-ledger-form">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> Start Date</label>
+                                    <input type="date" id="general-ledger-start" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-calendar icon-btn"></i> End Date</label>
+                                    <input type="date" id="general-ledger-end" class="form-control">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-filetype-csv icon-btn"></i> Export As</label>
+                                    <select id="general-ledger-export" class="form-control">
+                                        <option value="csv">CSV</option>
+                                        <option value="html">HTML</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mb-2"><i class="bi bi-eye icon-btn"></i> Generate</button>
+                                <button type="button" class="btn btn-success w-100" onclick="exportGeneralLedger()"><i class="bi bi-download icon-btn"></i> Export</button>
+                            </form>
+                            <table class="table table-striped mt-3" id="general-ledger-table">
+                                <thead><tr><th>Date</th><th>Description</th><th>Debit Account</th><th>Credit Account</th><th>Amount</th></tr></thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debug Tab -->
+                <div id="debug-tab" class="tab-pane">
+                    <h2><i class="bi bi-bug icon-btn"></i> Debug Info</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <p><strong>Data Preview:</strong> <pre id="debug-data" style="font-size: 12px; max-height: 250px; overflow: auto;"></pre></p>
+                            <button class="btn btn-danger w-100" onclick="resetData()"><i class="bi bi-arrow-repeat icon-btn"></i> Reset Database</button>
+                            <div id="debug-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentUser = null;
+        let users = {};
+        let accounts = [];
+        let transactions = [];
+
+        // Data Management
+        function loadData() {
+            try {
+                const data = localStorage.getItem('probooks_data');
+                if (data) {
+                    const parsed = JSON.parse(data);
+                    users = parsed.users || {};
+                    accounts = parsed.accounts || [];
+                    transactions = parsed.transactions || [];
+                }
+            } catch (e) {
+                console.error('Error loading data:', e);
+                showMessage('debug-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Error loading data.', true);
+            }
+            updateDebugView();
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem('probooks_data', JSON.stringify({ users, accounts, transactions }));
+            } catch (e) {
+                console.error('Error saving data:', e);
+                showMessage('debug-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Error saving data.', true);
+            }
+            updateDebugView();
+        }
+
+        function resetData() {
+            if (confirm('Reset database? This will clear all data.')) {
+                users = {};
+                accounts = [];
+                transactions = [];
+                localStorage.removeItem('probooks_data');
+                showMessage('login-message', '<i class="bi bi-info-circle icon-btn"></i> Database reset.', false);
+                showView('login');
+                updateDebugView();
+            }
+        }
+
+        // UI Navigation
+        function showView(viewId) {
+            if (viewId === 'app' && !currentUser && Object.keys(users).length > 0) {
+                showMessage('login-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please log in to access the app.', true);
+                return;
+            }
+            if (viewId === 'app' && Object.keys(users).length === 0) {
+                showMessage('login-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> No accounts exist. Please register first.', true);
+                return;
+            }
+            document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+            document.getElementById(`${viewId}-view`).classList.add('active');
+            if (viewId === 'app') {
+                showTab('dashboard');
+            }
+        }
+
+        function showTab(tabId) {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            document.querySelector(`a[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+            if (tabId === 'dashboard') loadDashboard();
+            else if (tabId === 'accounts') loadAccounts();
+            else if (tabId === 'transactions') loadTransactions();
+            else if (tabId === 'reports') loadReports();
+            else if (tabId === 'debug') updateDebugView();
+        }
+
+        function showMessage(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.innerHTML = `<div class="alert ${isError ? 'alert-danger' : 'alert-success'}">${message}</div>`;
+                setTimeout(() => element.innerHTML = '', 3000);
+            }
+        }
+
+        function updateDebugView() {
+            document.getElementById('debug-data').textContent = JSON.stringify({ users, accounts, transactions }, null, 2);
+        }
+
+        // Authentication
+        document.getElementById('register-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value.trim();
+            if (!username || !password) {
+                showMessage('register-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please fill all fields.', true);
+                return;
+            }
+            if (users[username]) {
+                showMessage('register-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Username already exists.', true);
+            } else {
+                users[username] = { password };
+                saveData();
+                showMessage('register-message', '<i class="bi bi-check-circle icon-btn"></i> Account created successfully. Please login.', false);
+                document.getElementById('register-form').reset();
+                showView('login');
+            }
+        });
+
+        document.getElementById('login-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            if (!username || !password) {
+                showMessage('login-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please fill all fields.', true);
+                return;
+            }
+            if (users[username] && users[username].password === password) {
+                currentUser = username;
+                document.getElementById('username').textContent = username;
+                showView('app');
+                showMessage('login-message', '<i class="bi bi-check-circle icon-btn"></i> Logged in successfully.', false);
+            } else {
+                showMessage('login-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Invalid username or password.', true);
+            }
+        });
+
+        function logout() {
+            currentUser = null;
+            showView('login');
+            document.getElementById('login-form').reset();
+            showMessage('login-message', '<i class="bi bi-info-circle icon-btn"></i> Logged out successfully.', false);
+        }
+
+        // Accounts
+        document.getElementById('account-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('account-name').value.trim();
+            const type = document.getElementById('account-type').value;
+            const openingBalance = parseFloat(document.getElementById('account-opening-balance').value) || 0;
+            if (!name || !type) {
+                showMessage('accounts-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please fill all required fields.', true);
+                return;
+            }
+            if (accounts.find(a => a.name === name && a.user === currentUser)) {
+                showMessage('accounts-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Account name already exists.', true);
+                return;
+            }
+            accounts.push({ id: Date.now().toString(), user: currentUser, name, type, openingBalance, balance: openingBalance });
+            saveData();
+            showMessage('accounts-message', '<i class="bi bi-check-circle icon-btn"></i> Account created successfully.', false);
+            document.getElementById('account-form').reset();
+            loadAccounts();
+            loadDashboard();
+        });
+
+        function loadAccounts() {
+            const tbody = document.getElementById('accounts-list').querySelector('tbody');
+            tbody.innerHTML = '';
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            userAccounts.forEach(account => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${account.name}</td>
+                    <td>${account.type}</td>
+                    <td>${account.balance.toFixed(2)}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deleteAccount('${account.id}')"><i class="bi bi-trash icon-btn"></i> Delete</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function deleteAccount(id) {
+            if (transactions.some(t => t.user === currentUser && (t.debitAccount === id || t.creditAccount === id))) {
+                showMessage('accounts-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Cannot delete account with transactions.', true);
+                return;
+            }
+            accounts = accounts.filter(a => a.id !== id);
+            saveData();
+            showMessage('accounts-message', '<i class="bi bi-check-circle icon-btn"></i> Account deleted successfully.', false);
+            loadAccounts();
+            loadDashboard();
+        }
+
+        // Transactions
+        document.getElementById('transaction-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const date = document.getElementById('transaction-date').value;
+            const description = document.getElementById('transaction-description').value.trim();
+            const debitAccount = document.getElementById('debit-account').value;
+            const creditAccount = document.getElementById('credit-account').value;
+            const amount = parseFloat(document.getElementById('transaction-amount').value);
+            if (!date || !description || !debitAccount || !creditAccount || !amount) {
+                showMessage('transactions-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please fill all fields.', true);
+                return;
+            }
+            if (debitAccount === creditAccount) {
+                showMessage('transactions-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Debit and credit accounts must be different.', true);
+                return;
+            }
+            if (amount <= 0) {
+                showMessage('transactions-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Amount must be positive.', true);
+                return;
+            }
+            transactions.push({
+                id: Date.now().toString(),
+                user: currentUser,
+                date,
+                description,
+                debitAccount,
+                creditAccount,
+                amount
+            });
+            const debitAcc = accounts.find(a => a.id === debitAccount);
+            const creditAcc = accounts.find(a => a.id === creditAccount);
+            if (debitAcc && creditAcc) {
+                if (['Asset', 'Expense'].includes(debitAcc.type)) {
+                    debitAcc.balance += amount;
+                } else {
+                    debitAcc.balance -= amount;
+                }
+                if (['Asset', 'Expense'].includes(creditAcc.type)) {
+                    creditAcc.balance -= amount;
+                } else {
+                    creditAcc.balance += amount;
+                }
+            }
+            saveData();
+            showMessage('transactions-message', '<i class="bi bi-check-circle icon-btn"></i> Transaction recorded successfully.', false);
+            document.getElementById('transaction-form').reset();
+            loadTransactions();
+            loadDashboard();
+        });
+
+        function loadTransactions() {
+            const debitSelect = document.getElementById('debit-account');
+            const creditSelect = document.getElementById('credit-account');
+            debitSelect.innerHTML = '<option value="">Select Account</option>';
+            creditSelect.innerHTML = '<option value="">Select Account</option>';
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            userAccounts.forEach(account => {
+                const option = document.createElement('option');
+                option.value = account.id;
+                option.textContent = `${account.name} (${account.type})`;
+                debitSelect.appendChild(option.cloneNode(true));
+                creditSelect.appendChild(option);
+            });
+
+            const tbody = document.getElementById('transactions-list').querySelector('tbody');
+            tbody.innerHTML = '';
+            const userTransactions = transactions.filter(t => t.user === currentUser);
+            userTransactions.forEach(t => {
+                const debit = accounts.find(a => a.id === t.debitAccount)?.name || 'Unknown';
+                const credit = accounts.find(a => a.id === t.creditAccount)?.name || 'Unknown';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td>${debit}</td>
+                    <td>${credit}</td>
+                    <td>${t.amount.toFixed(2)}</td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deleteTransaction('${t.id}')"><i class="bi bi-trash icon-btn"></i> Delete</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function deleteTransaction(id) {
+            transactions = transactions.filter(t => t.id !== id);
+            saveData();
+            showMessage('transactions-message', '<i class="bi bi-check-circle icon-btn"></i> Transaction deleted successfully.', false);
+            loadTransactions();
+            loadDashboard();
+        }
+
+        // Dashboard
+        function loadDashboard() {
+            document.getElementById('username').textContent = currentUser;
+            const accountsTbody = document.getElementById('accounts-table').querySelector('tbody');
+            accountsTbody.innerHTML = '';
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            userAccounts.forEach(account => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${account.name}</td>
+                    <td>${account.type}</td>
+                    <td>${account.balance.toFixed(2)}</td>
+                `;
+                accountsTbody.appendChild(row);
+            });
+
+            const transactionsTbody = document.getElementById('transactions-table').querySelector('tbody');
+            transactionsTbody.innerHTML = '';
+            const userTransactions = transactions.filter(t => t.user === currentUser).slice(-5);
+            userTransactions.forEach(t => {
+                const debit = accounts.find(a => a.id === t.debitAccount)?.name || 'Unknown';
+                const credit = accounts.find(a => a.id === t.creditAccount)?.name || 'Unknown';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td>${debit}</td>
+                    <td>${credit}</td>
+                    <td>${t.amount.toFixed(2)}</td>
+                `;
+                transactionsTbody.appendChild(row);
+            });
+        }
+
+        // Reports
+        function loadReports() {
+            const accountSelect = document.getElementById('account-ledger-account');
+            accountSelect.innerHTML = '<option value="">Select Account</option>';
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            userAccounts.forEach(account => {
+                const option = document.createElement('option');
+                option.value = account.id;
+                option.textContent = `${account.name} (${account.type})`;
+                accountSelect.appendChild(option);
+            });
+        }
+
+        // Balance Sheet
+        document.getElementById('balance-sheet-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const startDate = document.getElementById('balance-sheet-start').value;
+            const endDate = document.getElementById('balance-sheet-end').value;
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('balance-sheet-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            const balances = {
+                Asset: 0,
+                Liability: 0,
+                Equity: 0,
+                Revenue: 0,
+                Expense: 0
+            };
+            userAccounts.forEach(account => {
+                let balance = account.openingBalance;
+                userTransactions.forEach(t => {
+                    if (t.debitAccount === account.id) {
+                        balance += ['Asset', 'Expense'].includes(account.type) ? t.amount : -t.amount;
+                    } else if (t.creditAccount === account.id) {
+                        balance += ['Asset', 'Expense'].includes(account.type) ? -t.amount : t.amount;
+                    }
+                });
+                balances[account.type] += balance;
+            });
+            const tbody = document.getElementById('balance-sheet-table').querySelector('tbody');
+            tbody.innerHTML = '';
+            for (const [type, amount] of Object.entries(balances)) {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${type}</td><td>${amount.toFixed(2)}</td>`;
+                tbody.appendChild(row);
+            }
+        });
+
+        function exportBalanceSheet() {
+            const startDate = document.getElementById('balance-sheet-start').value;
+            const endDate = document.getElementById('balance-sheet-end').value;
+            const exportType = document.getElementById('balance-sheet-export').value;
+            if (!document.getElementById('balance-sheet-table').querySelector('tbody').children.length) {
+                showMessage('balance-sheet-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please generate the report first.', true);
+                return;
+            }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('balance-sheet-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const userAccounts = accounts.filter(a => a.user === currentUser);
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            const balances = {
+                Asset: 0,
+                Liability: 0,
+                Equity: 0,
+                Revenue: 0,
+                Expense: 0
+            };
+            userAccounts.forEach(account => {
+                let balance = account.openingBalance;
+                userTransactions.forEach(t => {
+                    if (t.debitAccount === account.id) {
+                        balance += ['Asset', 'Expense'].includes(account.type) ? t.amount : -t.amount;
+                    } else if (t.creditAccount === account.id) {
+                        balance += ['Asset', 'Expense'].includes(account.type) ? -t.amount : t.amount;
+                    }
+                });
+                balances[account.type] += balance;
+            });
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15);
+            if (exportType === 'csv') {
+                let csv = '"Category","Amount"\n';
+                for (const [category, amount] of Object.entries(balances)) {
+                    csv += `"${category}","${amount.toFixed(2)}"\n`;
+                }
+                csv = `ADTEMPCO COOPMART MANABO\nSAN JUAN NORTE, MANABO, ABRA 2810\nBalance Sheet\nDate: ${new Date().toLocaleDateString()}\n\n${csv}`;
+                downloadFile(csv, `balance_sheet_${timestamp}.csv`, 'text/csv');
+                showMessage('balance-sheet-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as balance_sheet_${timestamp}.csv`, false);
+            } else {
+                const header = `
+                    <h1>ProBooks</h1>
+                    <h2>ADTEMPCO COOPMART MANABO</h2>
+                    <p>SAN JUAN NORTE, MANABO, ABRA 2810</p>
+                    <h3>Balance Sheet</h3>
+                    <p>Date: ${new Date().toLocaleDateString()}</p>
+                `;
+                const table = document.getElementById('balance-sheet-table').outerHTML;
+                downloadFile(header + table, `balance_sheet_${timestamp}.html`, 'text/html');
+                showMessage('balance-sheet-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as balance_sheet_${timestamp}.html`, false);
+            }
+        }
+
+        // Account Ledger
+        document.getElementById('account-ledger-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const accountId = document.getElementById('account-ledger-account').value;
+            const startDate = document.getElementById('account-ledger-start').value;
+            const endDate = document.getElementById('account-ledger-end').value;
+            if (!accountId) {
+                showMessage('account-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please select an account.', true);
+                return;
+            }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('account-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const account = accounts.find(a => a.id === accountId);
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (t.debitAccount === accountId || t.creditAccount === accountId) &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            let runningBalance = account.openingBalance;
+            const ledgerEntries = userTransactions.map(t => {
+                const isDebit = t.debitAccount === accountId;
+                const debit = isDebit ? t.amount : 0;
+                const credit = !isDebit ? t.amount : 0;
+                if (['Asset', 'Expense'].includes(account.type)) {
+                    runningBalance += isDebit ? t.amount : -t.amount;
+                } else {
+                    runningBalance += isDebit ? -t.amount : t.amount;
+                }
+                return {
+                    date: t.date,
+                    description: t.description,
+                    debit,
+                    credit,
+                    balance: runningBalance
+                };
+            });
+            const tbody = document.getElementById('account-ledger-table').querySelector('tbody');
+            tbody.innerHTML = '';
+            ledgerEntries.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.description}</td>
+                    <td>${entry.debit.toFixed(2)}</td>
+                    <td>${entry.credit.toFixed(2)}</td>
+                    <td>${entry.balance.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        });
+
+        function exportAccountLedger() {
+            const accountId = document.getElementById('account-ledger-account').value;
+            const startDate = document.getElementById('account-ledger-start').value;
+            const endDate = document.getElementById('account-ledger-end').value;
+            const exportType = document.getElementById('account-ledger-export').value;
+            if (!accountId) {
+                showMessage('account-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please select an account.', true);
+                return;
+            }
+            if (!document.getElementById('account-ledger-table').querySelector('tbody').children.length) {
+                showMessage('account-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please generate the report first.', true);
+                return;
+            }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('account-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const account = accounts.find(a => a.id === accountId);
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (t.debitAccount === accountId || t.creditAccount === accountId) &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            let runningBalance = account.openingBalance;
+            const ledgerEntries = userTransactions.map(t => {
+                const isDebit = t.debitAccount === accountId;
+                const debit = isDebit ? t.amount : 0;
+                const credit = !isDebit ? t.amount : 0;
+                if (['Asset', 'Expense'].includes(account.type)) {
+                    runningBalance += isDebit ? t.amount : -t.amount;
+                } else {
+                    runningBalance += isDebit ? -t.amount : t.amount;
+                }
+                return {
+                    date: t.date,
+                    description: t.description,
+                    debit,
+                    credit,
+                    balance: runningBalance
+                };
+            });
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15);
+            if (exportType === 'csv') {
+                let csv = '"Date","Description","Debit","Credit","Balance"\n';
+                ledgerEntries.forEach(entry => {
+                    csv += `"${entry.date}","${entry.description.replace(/"/g, '""')}",${entry.debit.toFixed(2)},${entry.credit.toFixed(2)},${entry.balance.toFixed(2)}\n`;
+                });
+                csv = `ADTEMPCO COOPMART MANABO\nSAN JUAN NORTE, MANABO, ABRA 2810\nAccount Ledger: ${account.name}\nDate: ${new Date().toLocaleDateString()}\n\n${csv}`;
+                downloadFile(csv, `account_ledger_${account.name}_${timestamp}.csv`, 'text/csv');
+                showMessage('account-ledger-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as account_ledger_${account.name}_${timestamp}.csv`, false);
+            } else {
+                const header = `
+                    <h1>ProBooks</h1>
+                    <h2>ADTEMPCO COOPMART MANABO</h2>
+                    <p>SAN JUAN NORTE, MANABO, ABRA 2810</p>
+                    <h3>Account Ledger: ${account.name}</h3>
+                    <p>Date: ${new Date().toLocaleDateString()}</p>
+                `;
+                const table = document.getElementById('account-ledger-table').outerHTML;
+                downloadFile(header + table, `account_ledger_${account.name}_${timestamp}.html`, 'text/html');
+                showMessage('account-ledger-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as account_ledger_${account.name}_${timestamp}.html`, false);
+            }
+        }
+
+        // General Ledger
+        document.getElementById('general-ledger-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const startDate = document.getElementById('general-ledger-start').value;
+            const endDate = document.getElementById('general-ledger-end').value;
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('general-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            const tbody = document.getElementById('general-ledger-table').querySelector('tbody');
+            tbody.innerHTML = '';
+            userTransactions.forEach(t => {
+                const debit = accounts.find(a => a.id === t.debitAccount)?.name || 'Unknown';
+                const credit = accounts.find(a => a.id === t.creditAccount)?.name || 'Unknown';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${t.date}</td>
+                    <td>${t.description}</td>
+                    <td>${debit}</td>
+                    <td>${credit}</td>
+                    <td>${t.amount.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            showMessage('general-ledger-message', '<i class="bi bi-check-circle icon-btn"></i> Journal entries displayed successfully.', false);
+        });
+
+        function exportGeneralLedger() {
+            const startDate = document.getElementById('general-ledger-start').value;
+            const endDate = document.getElementById('general-ledger-end').value;
+            const exportType = document.getElementById('general-ledger-export').value;
+            if (!document.getElementById('general-ledger-table').querySelector('tbody').children.length) {
+                showMessage('general-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Please generate the report first.', true);
+                return;
+            }
+            if (startDate && endDate && new Date(startDate) > new Date(endDate)) {
+                showMessage('general-ledger-message', '<i class="bi bi-exclamation-triangle icon-btn"></i> Start date must be before end date.', true);
+                return;
+            }
+            const userTransactions = transactions.filter(t => t.user === currentUser &&
+                (!startDate || t.date >= startDate) && (!endDate || t.date <= endDate));
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '').slice(0, 15);
+            if (exportType === 'csv') {
+                let csv = '"Date","Description","Debit Account","Credit Account","Amount"\n';
+                userTransactions.forEach(t => {
+                    const debit = accounts.find(a => a.id === t.debitAccount)?.name || 'Unknown';
+                    const credit = accounts.find(a => a.id === t.creditAccount)?.name || 'Unknown';
+                    csv += `"${t.date}","${t.description.replace(/"/g, '""')}","${debit.replace(/"/g, '""')}","${credit.replace(/"/g, '""')}",${t.amount.toFixed(2)}\n`;
+                });
+                csv = `ADTEMPCO COOPMART MANABO\nSAN JUAN NORTE, MANABO, ABRA 2810\nGeneral Ledger\nDate: ${new Date().toLocaleDateString()}\n\n${csv}`;
+                downloadFile(csv, `general_ledger_${timestamp}.csv`, 'text/csv');
+                showMessage('general-ledger-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as general_ledger_${timestamp}.csv`, false);
+            } else {
+                const header = `
+                    <h1>ProBooks</h1>
+                    <h2>ADTEMPCO COOPMART MANABO</h2>
+                    <p>SAN JUAN NORTE, MANABO, ABRA 2810</p>
+                    <h3>General Ledger</h3>
+                    <p>Date: ${new Date().toLocaleDateString()}</p>
+                `;
+                const table = document.getElementById('general-ledger-table').outerHTML;
+                downloadFile(header + table, `general_ledger_${timestamp}.html`, 'text/html');
+                showMessage('general-ledger-message', `<i class="bi bi-check-circle icon-btn"></i> Exported as general_ledger_${timestamp}.html`, false);
+            }
+        }
+
+        // Utility
+        function downloadFile(content, fileName, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
